@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         playerImage.style.bottom = '40px';
         playerImage.style.left = '10px';
         playerImage.style.width = '10%';  // 設定寬度為 15% 來代表玩家的寬度 (這是一個示例值，您可以根據需要調整)
-        playerImage.style.height = '40%'; // 保持圖片的寬高比
+        playerImage.style.height = '45%'; // 保持圖片的寬高比
         gameArea.appendChild(playerImage);
         let jumpHeight = 0;
         const jumpSpeed = 4;
