@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', function () {
         bg1.style.top = '0';
         bg1.style.left = '0';
         bg2.style.top = '0';
-        bg1.style.width = '100%';  // 設定寬度為 100%
-        bg1.style.height = 'auto'; // 自動調整高度
-        bg2.style.width = '100%';  // 設定寬度為 100%
-        bg2.style.height = 'auto'; // 自動調整高度
+        bg1.style.width = '945px'; 
+        bg1.style.height = '100%'; 
+        bg2.style.width = '945px';  
+        bg2.style.height = '100%'; 
         gameArea.appendChild(bg1);
         gameArea.appendChild(bg2);
         let playerScore = 0;
