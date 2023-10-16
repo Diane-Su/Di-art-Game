@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let powerUpCount = 0;
         musicElements[currentMusicIndex].play();
         retryButton.style.display = 'none'; // 在遊戲開始時隱藏重試按鈕
-        const gameWidth = gameArea.offsetWidth;
+        const gameWidth = 945;
         bg2.style.left = `${gameWidth}px`;
 
         clearInterval(backgroundScrollInterval);
