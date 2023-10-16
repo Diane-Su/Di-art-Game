@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', function () {
         bg1.style.top = '0';
         bg1.style.left = '0';
         bg2.style.top = '0';
-        bg1.style.width = '945px'; 
-        bg1.style.height = '100%'; 
-        bg2.style.width = '945px';  
-        bg2.style.height = '100%'; 
+        bg1.style.width = '945px';
+        bg1.style.height = '100%';
+        bg2.style.width = '945px';
+        bg2.style.height = '100%';
         gameArea.appendChild(bg1);
         gameArea.appendChild(bg2);
         let playerScore = 0;
@@ -115,55 +115,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Jump Event Listener
         document.addEventListener('touchstart', function (e) {
-            if (isGameOver) {
-                return;
-            }
-
-            // 若在之前的事件中已被碰撞，則不做任何事
-            if (isColliding) return;
-
-            // 播放跳躍音效
-            const jumpSound = document.getElementById('jumpSound');
-            jumpSound.currentTime = 0; // 確保每次都從頭開始播放
-            jumpSound.play();
-
-            playerImage.src = `./asset/player/player.png`; // 開始跳躍時的圖片
-            jumpHeight = 100; // 固定跳躍高度為100px
-
-            clearInterval(runningAnimation);
-            clearInterval(jumpAnimation);
-            clearInterval(fallAnimation);
-
-            jumpAnimation = setInterval(function () {
-                playerImage.style.bottom = `${parseInt(playerImage.style.bottom) + jumpSpeed}px`;
-                jumpHeight -= jumpSpeed;
-
-                if (jumpHeight <= 70) {
-                    playerImage.src = `./asset/player/player.png`; // 跳躍到最高點時的圖片
-                }
-
-                if (jumpHeight <= 0) { // 當跳躍高度用完時
-                    clearInterval(jumpAnimation);
-
-                    // 開始下降
-                    playerImage.src = `./asset/player/player.png`; // 開始下降時的圖片
-                    fallAnimation = setInterval(function () {
-                        playerImage.style.bottom = `${parseInt(playerImage.style.bottom) - jumpSpeed}px`;
-
-                        if (parseInt(playerImage.style.bottom) <= 40) { // 當回到地面時
-                            playerImage.style.bottom = '40px';
-                            clearInterval(fallAnimation);
-                            playerImage.src = `./asset/player/player.png`; // 玩家回到地面時的圖片
-                            startRunningAnimation();
-                        }
-                    }, 16);
-                }
-            }, 16);
-        });
-
-        let lastTouchTime = 0;  // 保存上一次觸摸的時間
-
-        document.addEventListener('touchend', function (e) {
             let currentTime = new Date().getTime();
             let tapLength = currentTime - lastTouchTime;
             lastTouchTime = currentTime;
@@ -174,37 +125,86 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
-                if (!isAttacking && !isColliding) {
-                    // 播放泡泡音效
-                    const bubbleSound = document.getElementById('bubbleSound');
-                    bubbleSound.currentTime = 0; // 確保每次都從頭開始播放
-                    bubbleSound.play();
-                    // 創建泡泡
-                    const bubbleImage = document.createElement('img');
-                    bubbleImage.src = './asset/coffee.png';
-                    bubbleImage.style.position = 'absolute';
-                    bubbleImage.style.bottom = `${parseInt(playerImage.style.bottom) + 60}px`;
-                    const gameWidth = gameArea.offsetWidth;  // 獲取遊戲視窗的寬度
-                    bubbleImage.style.left = `${parseInt(playerImage.style.left) + 80}px`; // 基於玩家位置
-                    gameArea.appendChild(bubbleImage);
-                    bubbles.push(bubbleImage);
-                    isAttacking = true;
-                    clearInterval(this.runningAnimation);
-                    attackAnimationFrame = 1;
-                    playerImage.src = `./asset/player/player.png`;
+                // 若在之前的事件中已被碰撞，則不做任何事
+                if (isColliding) return;
 
-                    attackAnimation = setInterval(function () {
-                        attackAnimationFrame++;
-                        if (attackAnimationFrame > 3) {
-                            attackAnimationFrame = 1;
-                            clearInterval(attackAnimation);
-                            isAttacking = false;
-                            startRunningAnimation();
-                            return;
-                        }
-                        playerImage.src = `./asset/player/player.png`;
-                    }, 150);
-                }
+                // 播放跳躍音效
+                const jumpSound = document.getElementById('jumpSound');
+                jumpSound.currentTime = 0; // 確保每次都從頭開始播放
+                jumpSound.play();
+
+                playerImage.src = `./asset/player/player.png`; // 開始跳躍時的圖片
+                jumpHeight = 100; // 固定跳躍高度為100px
+
+                clearInterval(runningAnimation);
+                clearInterval(jumpAnimation);
+                clearInterval(fallAnimation);
+
+                jumpAnimation = setInterval(function () {
+                    playerImage.style.bottom = `${parseInt(playerImage.style.bottom) + jumpSpeed}px`;
+                    jumpHeight -= jumpSpeed;
+
+                    if (jumpHeight <= 70) {
+                        playerImage.src = `./asset/player/player.png`; // 跳躍到最高點時的圖片
+                    }
+
+                    if (jumpHeight <= 0) { // 當跳躍高度用完時
+                        clearInterval(jumpAnimation);
+
+                        // 開始下降
+                        playerImage.src = `./asset/player/player.png`; // 開始下降時的圖片
+                        fallAnimation = setInterval(function () {
+                            playerImage.style.bottom = `${parseInt(playerImage.style.bottom) - jumpSpeed}px`;
+
+                            if (parseInt(playerImage.style.bottom) <= 40) { // 當回到地面時
+                                playerImage.style.bottom = '40px';
+                                clearInterval(fallAnimation);
+                                playerImage.src = `./asset/player/player.png`; // 玩家回到地面時的圖片
+                                startRunningAnimation();
+                            }
+                        }, 16);
+                    }
+                }, 16);
+            }
+        });
+
+        let lastTouchTime = 0;  // 保存上一次觸摸的時間
+
+        document.addEventListener('touchend', function (e) {
+            if (isGameOver) {
+                return;
+            }
+
+            if (!isAttacking && !isColliding) {
+                // 播放泡泡音效
+                const bubbleSound = document.getElementById('bubbleSound');
+                bubbleSound.currentTime = 0; // 確保每次都從頭開始播放
+                bubbleSound.play();
+                // 創建泡泡
+                const bubbleImage = document.createElement('img');
+                bubbleImage.src = './asset/coffee.png';
+                bubbleImage.style.position = 'absolute';
+                bubbleImage.style.bottom = `${parseInt(playerImage.style.bottom) + 60}px`;
+                const gameWidth = gameArea.offsetWidth;  // 獲取遊戲視窗的寬度
+                bubbleImage.style.left = `${parseInt(playerImage.style.left) + 80}px`; // 基於玩家位置
+                gameArea.appendChild(bubbleImage);
+                bubbles.push(bubbleImage);
+                isAttacking = true;
+                clearInterval(this.runningAnimation);
+                attackAnimationFrame = 1;
+                playerImage.src = `./asset/player/player.png`;
+
+                attackAnimation = setInterval(function () {
+                    attackAnimationFrame++;
+                    if (attackAnimationFrame > 3) {
+                        attackAnimationFrame = 1;
+                        clearInterval(attackAnimation);
+                        isAttacking = false;
+                        startRunningAnimation();
+                        return;
+                    }
+                    playerImage.src = `./asset/player/player.png`;
+                }, 150);
             }
         });
 
